@@ -21,7 +21,6 @@ WriteMakefile(
         'List::Util'           => '0',
         'UUID::Tiny'           => '0',
         'namespace::autoclean' => '0',
-        'Net::IDN::Encode'     => '0',
     },
     META_MERGE => {
         'meta-spec' => {version => 2},
