@@ -9,7 +9,7 @@ WriteMakefile(
     AUTHOR             => q{Giuseppe Di Terlizzi <gdt@cpan.org>},
     VERSION_FROM       => 'lib/STIX.pm',
     LICENSE            => 'artistic_2',
-    MIN_PERL_VERSION   => 5.010,
+    MIN_PERL_VERSION   => 5.016,
     PL_FILES           => {},
     CONFIGURE_REQUIRES => {'ExtUtils::MakeMaker' => '0'},
     TEST_REQUIRES      => {'Test::More'          => '0'},
