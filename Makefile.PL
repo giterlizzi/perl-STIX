@@ -15,7 +15,7 @@ WriteMakefile(
     TEST_REQUIRES      => {'Test::More'          => '0'},
     PREREQ_PM          => {
         'Moo'              => '0',
-        'Type-Tiny'        => '0',
+        'Type::Tiny'       => '0',
         'JSON::Validator'  => '0',
         'Cpanel::JSON::XS' => '0',
         'List::Util'       => '0',
