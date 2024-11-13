@@ -5,3 +5,4 @@ requires 'Cpanel::JSON::XS';
 requires 'List::Util';
 requires 'UUID::Tiny';
 requires 'namespace::autoclean';
+requires 'Net::IDN::Encode';
