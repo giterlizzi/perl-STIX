@@ -31,7 +31,7 @@ sub _parse {
 
     my $datetime = shift;
 
-    return $datetime if ($datetime->isa('Time::Piece'));
+    return $datetime if (ref $datetime eq 'Time::Piece');
 
     #return $datetime->value if ($datetime->isa('STIX::Common::Timestamp')); # TODO
 
