@@ -87,7 +87,6 @@ use STIX::Marking::TLP::Amber;
 use STIX::Marking::TLP::Red;
 
 
-# TODO  Create STIX::Observable
 my @SDO = (qw[
     attack_pattern
     campaign
@@ -158,8 +157,6 @@ my @TLP = (qw[
     tlp_red
 ]);
 
-my @TYPES = (qw[]);
-
 my @COMMON = (qw[
     bundle
     extension_definition
@@ -172,23 +169,21 @@ our $VERSION = '1.00_2';
 $VERSION =~ tr/_//d;    ## no critic
 
 our %EXPORT_TAGS = (
-    all        => [@COMMON, @SDO, @SRO, @SCO, @TLP, @TYPES],
-    objects    => [@COMMON, @SDO, @SRO],
-    obsevables => [@SCO],
-    sdo        => \@SDO,
-    sro        => \@SRO,
-    tlp        => \@TLP,
-    types      => \@TYPES,
+    all    => [@COMMON, @SDO, @SRO, @SCO, @TLP],
+    common => \@COMMON,
+    sco    => \@SCO,
+    sdo    => \@SDO,
+    sro    => \@SRO,
+    tlp    => \@TLP,
 );
 
 
 Exporter::export_ok_tags('all');
-Exporter::export_ok_tags('objects');
-Exporter::export_ok_tags('obsevables');
+Exporter::export_ok_tags('common');
+Exporter::export_ok_tags('sco');
 Exporter::export_ok_tags('sdo');
 Exporter::export_ok_tags('sro');
 Exporter::export_ok_tags('tlp');
-Exporter::export_ok_tags('types');
 
 
 use constant SCO_NAMESPACE => '00abedb4-aa42-466c-9c01-fed23315a9b7';
@@ -328,16 +323,40 @@ cyber threat and observable information.
 L<https://docs.oasis-open.org/cti/stix/v2.1/os/stix-v2.1-os.html>
 
 
-=head2 CLASSES
+=head2 Tags
 
 =over
 
+=item :all
 
+Import all STIX objects
+
+=item :common
+
+Import all common objects
+
+=item :objects
+
+Import all STIX objects
+
+=item :sco
+
+Import all STIX Cyber-observable Objects
+
+=item :sdo
+
+Import all STIX Domain Objects
+
+=item :sro
+
+Import all STIX Relationship Objects
+
+=item :tlp
+
+Import TLP (Traffic Light Protocol) statement marking
 
 =back
 
-
-=head2 FUNCTIONS
 
 =head2 STIX Domain Objects
 
