@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Int Str Enum InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Int Str ArrayRef Enum InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -28,8 +30,11 @@ use constant STIX_OBJECT_TYPE => 'report';
 has name => (is => 'rw', isa => Str, required => 1);
 has description => (is => 'rw', isa => Str);
 
-has report_types =>
-    (is => 'rw', isa => ArrayRef [Enum [STIX::Common::OpenVocabulary->REPORT_TYPE()]], default => sub { [] });
+has report_types => (
+    is      => 'rw',
+    isa     => ArrayLike [Enum [STIX::Common::OpenVocabulary->REPORT_TYPE()]],
+    default => sub { STIX::Common::List->new }
+);
 
 has published => (
     is       => 'rw',
@@ -38,8 +43,11 @@ has published => (
     coerce   => sub { ref($_[0]) ? $_[0] : STIX::Common::Timestamp->new($_[0]) },
 );
 
-has object_refs =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Base', 'STIX::Common::Identifier']], default => sub { [] });
+has object_refs => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Object', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
+);
 
 1;
 
@@ -112,15 +120,19 @@ The type of this object, which MUST be the literal C<report>.
 
 =item $report->TO_JSON
 
-Convert L<STIX::Report> object in JSON.
+Encode the object in JSON.
+
+=item $report->to_hash
+
+Return the object HASH.
 
 =item $report->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $report->validate
 
-Validate L<STIX::Report> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

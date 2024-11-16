@@ -5,11 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str InstanceOf);
+
+use Moo;
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/common/external-reference.json';
@@ -45,7 +46,7 @@ represented outside of STIX.
 
 =head2 METHODS
 
-L<STIX::Common::ExternalReference> inherits all methods from L<STIX::Base>
+L<STIX::Common::ExternalReference> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -75,15 +76,19 @@ A URL reference to an external resource.
 
 =item $external_reference->TO_JSON
 
-Convert L<STIX::Common::ExternalReference> in JSON.
+Helper for JSON encoders.
+
+=item $external_reference->to_hash
+
+Return the object HASH.
 
 =item $external_reference->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $external_reference->validate
 
-Validate L<STIX::Common::ExternalReference> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

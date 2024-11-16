@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str ArrayRef);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -28,7 +30,7 @@ use constant STIX_OBJECT_TYPE => 'software';
 has name      => (is => 'rw', isa => Str, required => 1);
 has cpe       => (is => 'rw', isa => Str);
 has swid      => (is => 'rw', isa => Str);
-has languages => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has languages => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 has version   => (is => 'rw', isa => Str);
 has vendor    => (is => 'rw', isa => Str);
 
@@ -107,15 +109,19 @@ Specifies the version of the software.
 
 =item $software->TO_JSON
 
-Convert L<STIX::Observable::Software> object in JSON.
+Encode the object in JSON.
+
+=item $software->to_hash
+
+Return the object HASH.
 
 =item $software->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $software->validate
 
-Validate L<STIX::Observable::Software> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

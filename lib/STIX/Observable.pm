@@ -5,8 +5,8 @@ use strict;
 use warnings;
 use utf8;
 
-use STIX::Common::Enum;
 use STIX::Common::Binary;
+use STIX::Common::Enum;
 
 use Moo;
 extends 'STIX::Common::Properties';
@@ -32,15 +32,19 @@ L<STIX::Observable> inherits all methods from L<STIX::Common::Properties>.
 
 =item $object->TO_JSON
 
-Convert L<STIX::Observable> object in JSON.
+Encode the object in JSON.
+
+=item $object->to_hash
+
+Return the object HASH.
 
 =item $object->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $object->validate
 
-Validate L<STIX::Observable> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

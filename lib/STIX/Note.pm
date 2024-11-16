@@ -5,8 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
+
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -23,10 +27,15 @@ use constant PROPERTIES => (
 use constant STIX_OBJECT      => 'SDO';
 use constant STIX_OBJECT_TYPE => 'note';
 
-has abstract    => (is => 'rw', isa => Str);
-has content     => (is => 'rw', isa => Str, required => 1);
-has authors     => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
-has object_refs => (is => 'rw', isa => ArrayRef [InstanceOf ['Stix::Base', 'STIX::Common::Identifier']], required => 1);
+has abstract => (is => 'rw', isa => Str);
+has content  => (is => 'rw', isa => Str, required => 1);
+has authors  => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
+has object_refs => (
+    is       => 'rw',
+    isa      => ArrayLike [InstanceOf ['STIX::Object', 'STIX::Common::Identifier']],
+    required => 1,
+    default  => sub { [] }
+);
 
 1;
 
@@ -93,15 +102,19 @@ The type of this object, which MUST be the literal C<note>.
 
 =item $note->TO_JSON
 
-Convert L<STIX::Note> object in JSON.
+Encode the object in JSON.
+
+=item $note->to_hash
+
+Return the object HASH.
 
 =item $note->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $note->validate
 
-Validate L<STIX::Note> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

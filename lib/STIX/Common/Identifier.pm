@@ -84,13 +84,13 @@ RFC 4122-compliant UUID.
 
 =over
 
-=item $object->TO_JSON
+=item $identifier->TO_JSON
 
-Convert L<STIX::Common::Identifier> object in JSON.
+Encode the object in JSON.
 
-=item $object->to_string
+=item $identifier->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =back
 

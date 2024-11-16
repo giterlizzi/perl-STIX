@@ -9,6 +9,7 @@ use overload '""' => \&to_string, fallback => 1;
 
 use Carp;
 use MIME::Base64;
+
 use Moo;
 
 around BUILDARGS => sub {
@@ -76,13 +77,13 @@ property name MUST end with '_bin'.
 
 =over
 
-=item $object->TO_JSON
+=item $binary->TO_JSON
 
-Convert L<STIX::Common::Binary> object in JSON.
+Helper for JSON encoders.
 
-=item $object->to_string
+=item $binary->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =back
 

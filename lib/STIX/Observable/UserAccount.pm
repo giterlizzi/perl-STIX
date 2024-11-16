@@ -6,9 +6,9 @@ use warnings;
 use utf8;
 
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Bool Enum InstanceOf);
 
 use Moo;
-use Types::Standard qw(Str Bool Enum InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -184,15 +184,19 @@ Specifies the identifier of the account.
 
 =item $user_account->TO_JSON
 
-Convert L<STIX::Observable::UserAccount> object in JSON.
+Encode the object in JSON.
+
+=item $user_account->to_hash
+
+Return the object HASH.
 
 =item $user_account->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $user_account->validate
 
-Validate L<STIX::Observable::UserAccount> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

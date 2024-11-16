@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -86,15 +87,19 @@ The type of this object, which MUST be the literal C<course-of-action>.
 
 =item $course_of_action->TO_JSON
 
-Convert L<STIX::CourseOfAction> object in JSON.
+Encode the object in JSON.
+
+=item $course_of_action->to_hash
+
+Return the object HASH.
 
 =item $course_of_action->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $course_of_action->validate
 
-Validate L<STIX::CourseOfAction> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

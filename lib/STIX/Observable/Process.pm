@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str Bool HashRef Int InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str Bool ArrayRef HashRef Int InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -38,8 +41,8 @@ has environment_variables => (is => 'rw', isa => HashRef);
 
 has opened_connection_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable::NetworkTraffic', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::NetworkTraffic', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 has creator_user_ref => (is => 'rw', isa => InstanceOf ['STIX::Observable::UserAccount', 'STIX::Common::Identifier']);
@@ -48,8 +51,8 @@ has parent_ref       => (is => 'rw', isa => InstanceOf ['STIX::Observable::Proce
 
 has child_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable::Process', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::Process', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 1;
@@ -157,15 +160,19 @@ The value of this property MUST be C<process>.
 
 =item $process->TO_JSON
 
-Convert L<STIX::Observable::Process> object in JSON.
+Encode the object in JSON.
+
+=item $process->to_hash
+
+Return the object HASH.
 
 =item $process->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $process->validate
 
-Validate L<STIX::Observable::Process> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

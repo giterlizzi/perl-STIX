@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -73,15 +74,19 @@ Specifies the value of the URL.
 
 =item $url->TO_JSON
 
-Convert L<STIX::Observable::URL> object in JSON.
+Encode the object in JSON.
+
+=item $url->to_hash
+
+Return the object HASH.
 
 =item $url->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $url->validate
 
-Validate L<STIX::Observable::URL> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

@@ -5,11 +5,13 @@ use strict;
 use warnings;
 use utf8;
 
+use Types::Standard qw(Str);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     gid
@@ -21,7 +23,7 @@ use constant PROPERTIES => (qw[
 use constant EXTENSION_TYPE => 'unix-account-ext';
 
 has gid      => (is => 'rw', isa => Str);
-has groups   => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has groups   => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 has home_dir => (is => 'rw', isa => Str);
 has shell    => (is => 'rw', isa => Str);
 
@@ -48,7 +50,7 @@ producers MAY create their own.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::UnixAccount> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::UnixAccount> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -82,15 +84,19 @@ Specifies the account’s command shell.
 
 =item $unix_account_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::UnixAccount> in JSON.
+Helper for JSON encoders.
+
+=item $unix_account_ext->to_hash
+
+Return the object HASH.
 
 =item $unix_account_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $unix_account_ext->validate
 
-Validate L<STIX::Observable::Extension::UnixAccount> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

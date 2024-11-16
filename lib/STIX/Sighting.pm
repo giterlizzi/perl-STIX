@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Bool Int Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Bool Int Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -39,17 +42,20 @@ has last_seen => (
 
 has count => (is => 'rw', isa => Int);
 
-has sighting_of_ref => (is => 'rw', isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Base'], required => 1);
+has sighting_of_ref => (is => 'rw', isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Object'], required => 1);
 
 has observed_data_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 # TODO A list of ID references to the Identity or Location objects describing the entities or types of entities that saw the sighting.
-has where_sighted_refs =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Base', 'STIX::Common::Identifier']], default => sub { [] });
+has where_sighted_refs => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Object', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
+);
 
 has summary => (is => 'rw', isa => Bool, coerce => 1);
 
@@ -138,15 +144,19 @@ entities or types of entities that saw the sighting.
 
 =item $sighting->TO_JSON
 
-Convert L<STIX::Sighting> object in JSON.
+Encode the object in JSON.
+
+=item $sighting->to_hash
+
+Return the object HASH.
 
 =item $sighting->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $sighting->validate
 
-Validate L<STIX::Sighting> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

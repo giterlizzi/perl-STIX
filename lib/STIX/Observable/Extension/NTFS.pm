@@ -5,11 +5,13 @@ use strict;
 use warnings;
 use utf8;
 
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     sid
@@ -22,8 +24,8 @@ has sid => (is => 'rw', isa => Str);
 
 has alternate_data_streams => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable::Type::AlternateDataStream']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::Type::AlternateDataStream']],
+    default => sub { STIX::Common::List->new }
 );
 
 1;
@@ -48,7 +50,7 @@ specific to the storage of the file on the NTFS file system.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::NTFS> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::NTFS> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -75,15 +77,19 @@ Specifies a list of NTFS alternate data streams that exist for the file
 
 =item $ntfs_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::NTFS> in JSON.
+Helper for JSON encoders.
+
+=item $ntfs_ext->to_hash
+
+Return the object HASH.
 
 =item $ntfs_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $ntfs_ext->validate
 
-Validate L<STIX::Observable::Extension::NTFS> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

@@ -6,9 +6,9 @@ use warnings;
 use utf8;
 
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Num Enum);
 
 use Moo;
-use Types::Standard qw(Str Num Enum);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -132,15 +132,19 @@ The type of this object, which MUST be the literal C<location>.
 
 =item $location->TO_JSON
 
-Convert L<STIX::Location> object in JSON.
+Encode the object in JSON.
+
+=item $location->to_hash
+
+Return the object HASH.
 
 =item $location->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $location->validate
 
-Validate L<STIX::Location> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

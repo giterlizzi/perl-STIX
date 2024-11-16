@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -73,15 +74,19 @@ The value of this property MUST be C<mutex>.
 
 =item $mutex->TO_JSON
 
-Convert L<STIX::Observable::Mutex> object in JSON.
+Encode the object in JSON.
+
+=item $mutex->to_hash
+
+Return the object HASH.
 
 =item $mutex->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $mutex->validate
 
-Validate L<STIX::Observable::Mutex> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

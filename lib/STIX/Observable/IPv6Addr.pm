@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -25,10 +28,17 @@ use constant STIX_OBJECT_TYPE => 'ipv6-addr';
 
 has value => (is => 'rw', isa => Str, required => 1);
 
-has resolves_to_refs => (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Observable::MACAddr']], default => sub { [] });
+has resolves_to_refs => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::MACAddr']],
+    default => sub { STIX::Common::List->new }
+);
 
-has belongs_to_refs =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Observable::AutonomousSystem']], default => sub { [] });
+has belongs_to_refs => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::AutonomousSystem']],
+    default => sub { STIX::Common::List->new }
+);
 
 1;
 
@@ -91,15 +101,19 @@ Specifies one or more IPv6 addresses expressed using CIDR notation.
 
 =item $ipv6_addr->TO_JSON
 
-Convert L<STIX::Observable::IPv6Addr> object in JSON.
+Encode the object in JSON.
+
+=item $ipv6_addr->to_hash
+
+Return the object HASH.
 
 =item $ipv6_addr->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $ipv6_addr->validate
 
-Validate L<STIX::Observable::IPv6Addr> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

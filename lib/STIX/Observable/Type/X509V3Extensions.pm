@@ -9,7 +9,7 @@ use Moo;
 use Types::Standard qw(Str InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/observables/x509-certificate.json#/definitions/x509-v3-extensions-type';
@@ -71,7 +71,7 @@ Specifies any standard X.509 v3 extensions that may be used in the certificate.
 
 =head2 METHODS
 
-L<STIX::Observable::Type::X509V3Extensions> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Type::X509V3Extensions> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -167,15 +167,19 @@ that contain a particular public key.
 
 =item $x509_v3_extensions_type->TO_JSON
 
-Convert L<STIX::Observable::Type::X509V3Extensions> object in JSON.
+Encode the object in JSON.
+
+=item $x509_v3_extensions_type->to_hash
+
+Return the object HASH.
 
 =item $x509_v3_extensions_type->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $x509_v3_extensions_type->validate
 
-Validate L<STIX::Observable::Type::X509V3Extensions> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

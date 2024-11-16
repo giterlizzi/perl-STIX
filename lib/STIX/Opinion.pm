@@ -6,9 +6,11 @@ use warnings;
 use utf8;
 
 use STIX::Common::Enum;
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf Enum);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf Enum);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -25,11 +27,11 @@ use constant PROPERTIES => (
 use constant STIX_OBJECT      => 'SDO';
 use constant STIX_OBJECT_TYPE => 'opinion';
 
-has authors => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has authors => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 has opinion => (is => 'rw', isa => Enum [STIX::Common::Enum->OPINION()], required => 1);
 has object_refs => (
     is       => 'rw',
-    isa      => ArrayRef [InstanceOf ['STIX::Base', 'STIX::Common::Identifier']],
+    isa      => ArrayLike [InstanceOf ['STIX::Object', 'STIX::Common::Identifier']],
     required => 1,
     default  => sub { [] }
 );
@@ -100,15 +102,19 @@ The type of this object, which MUST be the literal C<opinion>.
 
 =item $opinion->TO_JSON
 
-Convert L<STIX::Opinion> object in JSON.
+Encode the object in JSON.
+
+=item $opinion->to_hash
+
+Return the object HASH.
 
 =item $opinion->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $opinion->validate
 
-Validate L<STIX::Opinion> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

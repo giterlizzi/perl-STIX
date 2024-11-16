@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str InstanceOf);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -87,15 +88,19 @@ Specifies a single email address. This MUST not include the display name.
 
 =item $email_addr->TO_JSON
 
-Convert L<STIX::Observable::EmailAddr> object in JSON.
+Encode the object in JSON.
+
+=item $email_addr->to_hash
+
+Return the object HASH.
 
 =item $email_addr->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $email_addr->validate
 
-Validate L<STIX::Observable::EmailAddr> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

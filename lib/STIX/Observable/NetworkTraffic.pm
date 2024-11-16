@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str Bool HashRef Int InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str Bool ArrayRef HashRef Int InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -57,7 +60,7 @@ has dst_ref => (
 
 has src_port        => (is => 'rw', isa => Int);
 has dst_port        => (is => 'rw', isa => Int);
-has protocols       => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has protocols       => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 has src_byte_count  => (is => 'rw', isa => Int);
 has dst_byte_count  => (is => 'rw', isa => Int);
 has src_packets     => (is => 'rw', isa => Int);
@@ -68,8 +71,8 @@ has dst_payload_ref => (is => 'rw', isa => InstanceOf ['STIX::Observable::Artifa
 
 has encapsulates_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable::NetworkTraffic', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::NetworkTraffic', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 has encapsulated_by_ref =>
@@ -197,15 +200,19 @@ The value of this property MUST be C<network-traffic>.
 
 =item $network_traffic->TO_JSON
 
-Convert L<STIX::Observable::NetworkTraffic> object in JSON.
+Encode the object in JSON.
+
+=item $network_traffic->to_hash
+
+Return the object HASH.
 
 =item $network_traffic->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $network_traffic->validate
 
-Validate L<STIX::Observable::NetworkTraffic> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

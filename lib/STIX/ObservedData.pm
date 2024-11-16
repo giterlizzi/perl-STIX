@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf Int);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf Int);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -39,13 +42,13 @@ has last_observed => (
 );
 
 has number_observed => (is => 'rw', isa => Int, required => 1);
-has objects => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has objects => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 
 has object_refs => (
     is  => 'rw',
     isa =>
-        ArrayRef [InstanceOf ['STIX::Observable', 'STIX::Relationship', 'STIX::Sighting', 'STIX::Common::Identifier']],
-    default => sub { [] }
+        ArrayLike [InstanceOf ['STIX::Observable', 'STIX::Relationship', 'STIX::Sighting', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 1;
@@ -118,15 +121,19 @@ The type of this object, which MUST be the literal C<observed-data>.
 
 =item $observed_data->TO_JSON
 
-Convert L<STIX::ObservedData> object in JSON.
+Encode the object in JSON.
+
+=item $observed_data->to_hash
+
+Return the object HASH.
 
 =item $observed_data->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $observed_data->validate
 
-Validate L<STIX::ObservedData> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

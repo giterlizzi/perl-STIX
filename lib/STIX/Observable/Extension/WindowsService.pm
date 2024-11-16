@@ -6,12 +6,13 @@ use warnings;
 use utf8;
 
 use STIX::Common::Enum;
+use Types::Standard qw(Str InstanceOf Enum);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf Enum);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     service_name
@@ -26,14 +27,18 @@ use constant PROPERTIES => (qw[
 
 use constant EXTENSION_TYPE => 'windows-service-ext';
 
-has service_name     => (is => 'rw', isa => Str);
-has descriptions     => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
-has display_name     => (is => 'rw', isa => Str);
-has group_name       => (is => 'rw', isa => Str);
-has start_type       => (is => 'rw', isa => Enum [STIX::Common::Enum->WINDOWS_SERVICE_START_TYPE()]);
-has service_dll_refs => (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Observable::File']], default => sub { [] });
-has service_type     => (is => 'rw', isa => Enum [STIX::Common::Enum->WINDOWS_SERVICE_TYPE()]);
-has service_status   => (is => 'rw', isa => Enum [STIX::Common::Enum->WINDOWS_SERVICE_STATUS()]);
+has service_name => (is => 'rw', isa => Str);
+has descriptions => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
+has display_name => (is => 'rw', isa => Str);
+has group_name   => (is => 'rw', isa => Str);
+has start_type   => (is => 'rw', isa => Enum [STIX::Common::Enum->WINDOWS_SERVICE_START_TYPE()]);
+has service_dll_refs => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::File']],
+    default => sub { STIX::Common::List->new }
+);
+has service_type   => (is => 'rw', isa => Enum [STIX::Common::Enum->WINDOWS_SERVICE_TYPE()]);
+has service_status => (is => 'rw', isa => Enum [STIX::Common::Enum->WINDOWS_SERVICE_STATUS()]);
 
 1;
 
@@ -58,7 +63,7 @@ properties specific to Windows services.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::WindowsService> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::WindowsService> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -109,15 +114,19 @@ Specifies the current status of the service (see C<WINDOWS_SERVICE_STATUS> in L<
 
 =item $windows_service_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::WindowsService> in JSON.
+Helper for JSON encoders.
+
+=item $windows_service_ext->to_hash
+
+Return the object HASH.
 
 =item $windows_service_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $windows_service_ext->validate
 
-Validate L<STIX::Observable::Extension::WindowsService> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

@@ -9,7 +9,7 @@ use Moo;
 use Types::Standard qw(Str InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/observables/email-message.json#/definitions/mime-part-type';
@@ -90,15 +90,19 @@ Specifies the value of the 'Content-Type' header field of the MIME part.
 
 =item $mime_part_type->TO_JSON
 
-Convert L<STIX::Observable::Type::EmailMIMEPart> in JSON.
+Helper for JSON encoders.
+
+=item $mime_part_type->to_hash
+
+Return the object HASH.
 
 =item $mime_part_type->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $mime_part_type->validate
 
-Validate L<STIX::Observable::Type::EmailMIMEPart> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

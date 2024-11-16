@@ -5,11 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Int HashRef);
+
+use Moo;
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     image_height
@@ -47,7 +48,7 @@ capturing properties specific to image files.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::RasterImage> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::RasterImage> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -83,15 +84,19 @@ Each key/value pair in the dictionary represents the name/value of a single EXIF
 
 =item $raster_image_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::RasterImage> in JSON.
+Helper for JSON encoders.
+
+=item $raster_image_ext->to_hash
+
+Return the object HASH.
 
 =item $raster_image_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $raster_image_ext->validate
 
-Validate L<STIX::Observable::Extension::RasterImage> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

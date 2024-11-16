@@ -11,7 +11,7 @@ use Moo;
 use Types::Standard qw(Str Int InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'https://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/observables/file.json#/definitions/windows-pe-optional-header-type';
@@ -272,15 +272,19 @@ Specifies the reserved win32 version value.
 
 =item $windows_pe_optional_header_type->TO_JSON
 
-Convert L<STIX::Observable::Type::WindowsPEOptionalHeader> in JSON.
+Helper for JSON encoders.
+
+=item $windows_pe_optional_header_type->to_hash
+
+Return the object HASH.
 
 =item $windows_pe_optional_header_type->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $windows_pe_optional_header_type->validate
 
-Validate L<STIX::Observable::Type::WindowsPEOptionalHeader> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

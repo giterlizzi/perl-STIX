@@ -5,11 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
-use JSON::Validator;
+use Exporter 'import';
+
 use File::Basename        qw(dirname);
 use File::Spec::Functions qw(catfile);
-
-use Exporter 'import';
+use JSON::Validator;
 
 use Moo;
 

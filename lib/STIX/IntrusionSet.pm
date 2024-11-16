@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Enum InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str ArrayRef Enum InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -27,7 +29,7 @@ use constant STIX_OBJECT_TYPE => 'intrusion-set';
 
 has name        => (is => 'rw', isa => Str, required => 1);
 has description => (is => 'rw', isa => Str);
-has aliases     => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has aliases     => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 
 has first_seen => (
     is     => 'rw',
@@ -41,12 +43,15 @@ has last_seen => (
     coerce => sub { ref($_[0]) ? $_[0] : STIX::Common::Timestamp->new($_[0]) },
 );
 
-has goals              => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has goals              => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 has resource_level     => (is => 'rw', isa => Enum [STIX::Common::OpenVocabulary->ATTACK_RESOURCE_LEVEL()]);
 has primary_motivation => (is => 'rw', isa => Enum [STIX::Common::OpenVocabulary->ATTACK_MOTIVATION()]);
 
-has secondary_motivations =>
-    (is => 'rw', isa => ArrayRef [Enum [STIX::Common::OpenVocabulary->ATTACK_MOTIVATION()]], default => sub { [] });
+has secondary_motivations => (
+    is      => 'rw',
+    isa     => ArrayLike [Enum [STIX::Common::OpenVocabulary->ATTACK_MOTIVATION()]],
+    default => sub { STIX::Common::List->new }
+);
 
 1;
 
@@ -137,15 +142,19 @@ The type of this object, which MUST be the literal C<intrusion-set>.
 
 =item $intrusion_set->TO_JSON
 
-Convert L<STIX::IntrusionSet> object in JSON.
+Encode the object in JSON.
+
+=item $intrusion_set->to_hash
+
+Return the object HASH.
 
 =item $intrusion_set->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $intrusion_set->validate
 
-Validate L<STIX::IntrusionSet> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

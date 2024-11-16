@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -82,15 +83,19 @@ The type of this object, which MUST be the literal C<incident>.
 
 =item $incident->TO_JSON
 
-Convert L<STIX::Incident> object in JSON.
+Encode the object in JSON.
+
+=item $incident->to_hash
+
+Return the object HASH.
 
 =item $incident->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $incident->validate
 
-Validate L<STIX::Incident> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

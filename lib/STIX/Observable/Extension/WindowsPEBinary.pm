@@ -5,14 +5,14 @@ use strict;
 use warnings;
 use utf8;
 
-use STIX::Common::OpenVocabulary;
 use STIX::Common::Hex;
+use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Int InstanceOf Enum);
 
 use Moo;
-use Types::Standard qw(Str Int InstanceOf Enum);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     pe_type imphash machine_hex number_of_sections time_date_stamp pointer_to_symbol_table_hex
@@ -80,7 +80,7 @@ properties specific to Windows portable executable (PE) files.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::WindowsPEBinary> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::WindowsPEBinary> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -153,15 +153,19 @@ Specifies metadata about the sections in the PE file
 
 =item $windows_pe_binary_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::WindowsPEBinary> in JSON.
+Helper for JSON encoders.
+
+=item $windows_pe_binary_ext->to_hash
+
+Return the object HASH.
 
 =item $windows_pe_binary_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $windows_pe_binary_ext->validate
 
-Validate L<STIX::Observable::Extension::WindowsPEBinary> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

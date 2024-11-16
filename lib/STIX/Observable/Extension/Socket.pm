@@ -6,12 +6,12 @@ use warnings;
 use utf8;
 
 use STIX::Common::Enum;
+use Types::Standard qw(Str Int Enum Bool HashRef);
 
 use Moo;
-use Types::Standard qw(Str Int Enum Bool HashRef);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     address_family
@@ -56,7 +56,7 @@ traffic properties associated with network sockets.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::Socket> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::Socket> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -104,15 +104,19 @@ Specifies the handle or inode value associated with the socket.
 
 =item $socket_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::Socket> in JSON.
+Helper for JSON encoders.
+
+=item $socket_ext->to_hash
+
+Return the object HASH.
 
 =item $socket_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $socket_ext->validate
 
-Validate L<STIX::Observable::Extension::Socket> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

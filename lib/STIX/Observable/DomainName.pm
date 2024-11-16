@@ -5,8 +5,10 @@ use strict;
 use warnings;
 use utf8;
 
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str InstanceOf ArrayRef);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -27,13 +29,13 @@ has value => (is => 'rw', isa => Str, required => 1);
 
 has resolves_to_refs => (
     is  => 'rw',
-    isa => ArrayRef [
+    isa => ArrayLike [
         InstanceOf [
             'STIX::Cbservable::IPv4Addr',   'STIX::Observable::IPv6Addr',
             'STIX::Observable::DomainName', 'STIX::Common::Identifier'
         ]
     ],
-    default => sub { [] }
+    default => sub { STIX::Common::List->new }
 );
 
 1;
@@ -91,15 +93,19 @@ Specifies the value of the domain name.
 
 =item $domain_name->TO_JSON
 
-Convert L<STIX::Observable::DomainName> object in JSON.
+Encode the object in JSON.
+
+=item $domain_name->to_hash
+
+Return the object HASH.
 
 =item $domain_name->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $domain_name->validate
 
-Validate L<STIX::Observable::DomainName> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

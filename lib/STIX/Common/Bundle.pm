@@ -5,13 +5,15 @@ use strict;
 use warnings;
 use utf8;
 
-use UUID::Tiny qw(:std);
+use STIX::Common::List;
+use Types::Standard qw(StrMatch InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+use UUID::Tiny      qw(:std);
 
 use Moo;
-use Types::Standard qw(Str InstanceOf ArrayRef);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/common/bundle.json';
@@ -20,9 +22,18 @@ use constant PROPERTIES => qw(type id objects);
 
 use constant STIX_OBJECT_TYPE => 'bundle';
 
-has type    => (is => 'ro', default => 'bundle');
-has objects => (is => 'rw', isa     => ArrayRef [], default => sub { [] });
-has id      => (is => 'rw', isa     => Str, lazy => 1, default => sub { shift->generate_id });
+has type => (is => 'ro', default => 'bundle');
+
+has objects => (is => 'rw', isa => ArrayLike [InstanceOf ['STIX::Object']], default => sub { STIX::Common::List->new });
+
+has id => (
+    is  => 'rw',
+    isa => StrMatch [
+        qr{^[a-z][a-z0-9-]+[a-z0-9]--[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$}
+    ],
+    lazy    => 1,
+    default => sub { shift->generate_id }
+);
 
 1;
 
@@ -44,6 +55,12 @@ STIX::Common::Bundle - STIX Bundle
         ]
     );
 
+    # append new STIX object
+    push @{ $bundle->objects }, STIX::Incident->new( ... );
+
+    # append new STIX object using STIX::Common::List->push
+    $bundle->objects->push( STIX::Indicator->new( ... ) );
+
 
 =head1 DESCRIPTION
 
@@ -53,7 +70,7 @@ grouped together in a single container.
 
 =head2 METHODS
 
-L<STIX::Common::Bundle> inherits all methods from L<STIX::Base>
+L<STIX::Common::Bundle> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -85,15 +102,19 @@ The type of this object, which MUST be the literal C<bundle>.
 
 =item $bundle->TO_JSON
 
-Convert L<STIX::Common::Bundle> in JSON.
+Helper for JSON encoders.
+
+=item $bundle->to_hash
+
+Return the object HASH.
 
 =item $bundle->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $bundle->validate
 
-Validate L<STIX::Common::Bundle> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

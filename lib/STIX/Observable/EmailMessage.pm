@@ -6,9 +6,10 @@ use warnings;
 use utf8;
 
 use STIX::Common::Timestamp;
+use Types::Standard qw(Bool Str HashRef InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Bool Str ArrayRef HashRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -39,29 +40,32 @@ has sender_ref   => (is => 'rw', isa => InstanceOf ['STIX::Obserbable::EmailAddr
 
 has to_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Obserbable::EmailAddr', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Obserbable::EmailAddr', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 has cc_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Obserbable::EmailAddr', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Obserbable::EmailAddr', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 has bcc_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Obserbable::EmailAddr', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Obserbable::EmailAddr', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 
 has subject                  => (is => 'rw', isa => Str);
-has received_lines           => (is => 'rw', isa => ArrayRef [Str]);
+has received_lines           => (is => 'rw', isa => ArrayLike [Str]);
 has additional_header_fields => (is => 'rw', isa => HashRef);
 has body                     => (is => 'rw', isa => Str);
 
-has body_multipart =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Observable::Type::EmailMIMEPart']], default => sub { [] });
+has body_multipart => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::Type::EmailMIMEPart']],
+    default => sub { STIX::Common::List->new }
+);
 
 has raw_email_ref => (is => 'rw', isa => InstanceOf ['STIX::Observable::Artifact']);
 
@@ -162,15 +166,19 @@ The value of this property MUST be C<email-message>.
 
 =item $email_message->TO_JSON
 
-Convert L<STIX::Observable::EmailMessage> object in JSON.
+Encode the object in JSON.
+
+=item $email_message->to_hash
+
+Return the object HASH.
 
 =item $email_message->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $email_message->validate
 
-Validate L<STIX::Observable::EmailMessage> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

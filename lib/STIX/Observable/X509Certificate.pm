@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str Int InstanceOf Bool);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -155,15 +156,19 @@ certificate.
 
 =item $x509_certificate->TO_JSON
 
-Convert L<STIX::Observable::X509Certificate> object in JSON.
+Encode the object in JSON.
+
+=item $x509_certificate->to_hash
+
+Return the object HASH.
 
 =item $x509_certificate->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $x509_certificate->validate
 
-Validate L<STIX::Observable::X509Certificate> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

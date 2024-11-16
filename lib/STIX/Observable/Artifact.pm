@@ -5,11 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
-use STIX::Common::Enum;
 use STIX::Common::Binary;
+use STIX::Common::Enum;
+use Types::Standard qw(Str InstanceOf Enum);
 
 use Moo;
-use Types::Standard qw(Str InstanceOf Enum);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -117,15 +117,19 @@ unencoded content.
 
 =item $artifact->TO_JSON
 
-Convert L<STIX::Observable::Artifact> object in JSON.
+Encode the object in JSON.
+
+=item $artifact->to_hash
+
+Return the object HASH.
 
 =item $artifact->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $artifact->validate
 
-Validate L<STIX::Observable::Artifact> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

@@ -5,8 +5,10 @@ use strict;
 use warnings;
 use utf8;
 
+use Types::Standard qw(Str HashRef Int InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef HashRef Int InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -55,8 +57,9 @@ has atime => (
 );
 
 has parent_directory_ref => (is => 'rw', isa => InstanceOf ['STIX::Observable::Directory', 'STIX::Common::Identifier']);
-has contains_refs        => (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Observable']], default => sub { [] });
-has content_ref          => (is => 'rw', isa => InstanceOf ['STIX::Observable::Artifact']);
+has contains_refs =>
+    (is => 'rw', isa => ArrayLike [InstanceOf ['STIX::Observable']], default => sub { STIX::Common::List->new });
+has content_ref => (is => 'rw', isa => InstanceOf ['STIX::Observable::Artifact']);
 
 1;
 
@@ -162,15 +165,19 @@ The value of this property MUST be C<file>.
 
 =item $file->TO_JSON
 
-Convert L<STIX::Observable::File> object in JSON.
+Encode the object in JSON.
+
+=item $file->to_hash
+
+Return the object HASH.
 
 =item $file->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $file->validate
 
-Validate L<STIX::Observable::File> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

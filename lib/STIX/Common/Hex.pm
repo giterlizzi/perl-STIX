@@ -77,13 +77,13 @@ type, the property name MUST end with '_hex'.
 
 =over
 
-=item $object->TO_JSON
+=item $hex->TO_JSON
 
-Convert L<STIX::Common::Hex> object in JSON.
+Encode the object in JSON.
 
-=item $object->to_string
+=item $hex->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =back
 

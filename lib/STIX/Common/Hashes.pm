@@ -5,11 +5,13 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
+use Cpanel::JSON::XS;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     md5
@@ -64,6 +66,19 @@ sub TO_JSON {
 
 }
 
+sub to_hash { shift->TO_JSON }
+
+sub to_string {
+
+    my $self = shift;
+
+    my $json = Cpanel::JSON::XS->new->utf8->canonical->allow_nonref->allow_unknown->allow_blessed->convert_blessed
+        ->stringify_infnan->escape_slash(0)->allow_dupkeys->pretty;
+
+    return $json->encode($self->TO_JSON);
+
+}
+
 1;
 
 =encoding utf-8
@@ -113,13 +128,17 @@ used to generate the corresponding value.
 
 =over
 
-=item $object->TO_JSON
+=item $hashes->TO_JSON
 
-Convert L<STIX::Common::Hashes> object in JSON.
+Encode the object in JSON.
 
-=item $object->to_string
+=item $hashes->to_hash
 
-Alias of L<TO_JSON>.
+Return the object HASH.
+
+=item $hashes->to_string
+
+Encode the object in JSON.
 
 =back
 

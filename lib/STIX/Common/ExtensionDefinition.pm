@@ -6,9 +6,11 @@ use warnings;
 use utf8;
 
 use STIX::Common::Enum;
+use STIX::Common::List;
+use Types::Standard qw(Str Enum);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str ArrayRef Enum);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -24,12 +26,19 @@ use constant PROPERTIES => (
 
 use constant STIX_OBJECT_TYPE => 'extension-definition';
 
-has name                 => (is => 'rw', isa => Str, required => 1);
-has description          => (is => 'rw', isa => Str);
-has schema               => (is => 'rw', isa => Str, required => 1);
-has version              => (is => 'rw', isa => Str, required => 1);
-has extension_types      => (is => 'rw', isa => ArrayRef [Enum [STIX::Common::Enum->EXTENSION_TYPE()]], required => 1);
-has extension_properties => (is => 'rw', isa => ArrayRef [Str]);
+has name        => (is => 'rw', isa => Str, required => 1);
+has description => (is => 'rw', isa => Str);
+has schema      => (is => 'rw', isa => Str, required => 1);
+has version     => (is => 'rw', isa => Str, required => 1);
+
+has extension_types => (
+    is       => 'rw',
+    isa      => ArrayLike [Enum [STIX::Common::Enum->EXTENSION_TYPE()]],
+    required => 1,
+    default  => sub { [] }
+);
+
+has extension_properties => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 
 1;
 
@@ -42,8 +51,24 @@ STIX::Common::ExtensionDefinition - STIX Extension Definition
 =head1 SYNOPSIS
 
     use STIX::Common::ExtensionDefinition;
+    use STIX::Indicator;
 
-    my $extension_definition = STIX::Common::ExtensionDefinition->new();
+    my $extension_definition = STIX::Common::ExtensionDefinition->new(
+        extension_types => ['property-extension'],
+        name            => 'Extension Foo 1',
+        schema          => 'https://www.example.com/schema-foo-1/v1/',
+        version         => '1.2.1',
+    );
+
+    my $indicator = STIX::Indicator->new(
+        name         => 'File hash for Poison Ivy variant',
+        description  => 'This file hash indicates that a sample of Poison Ivy is present.',
+        labels       => ['malicious-activity'],
+        pattern      => q{[file:hashes.'SHA-256' = 'ef537f25c895bfa782526529a9b63d97aa631564d5d789c2b765448c8635fb6c']},
+        pattern_type => 'stix',
+        valid_from   => '2014-02-20T09:00:00.000000Z',
+        extensions   => {$extension_definition->id => {extension_type => 'property-extension', rank => 5, toxicity => 8}}
+    );
 
 
 =head1 DESCRIPTION
@@ -107,15 +132,19 @@ The version of this extension.
 
 =item $extension_definition->TO_JSON
 
-Convert L<STIX::Common::ExtensionDefinition> in JSON.
+Helper for JSON encoders.
+
+=item $extension_definition->to_hash
+
+Return the object HASH.
 
 =item $extension_definition->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $extension_definition->validate
 
-Validate L<STIX::Common::ExtensionDefinition> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str HashRef);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -50,7 +51,7 @@ The marking-definition object represents a specific marking.
 
 =head2 METHODS
 
-L<STIX::Common::MarkingDefinition> inherits all methods from L<STIX::Base>
+L<STIX::Common::MarkingDefinition> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -116,15 +117,19 @@ The definition_type property identifies the type of Marking Definition.
 
 =item $marking_definition->TO_JSON
 
-Convert L<STIX::Common::MarkingDefinition> in JSON.
+Helper for JSON encoders.
+
+=item $marking_definition->to_hash
+
+Return the object HASH.
 
 =item $marking_definition->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $marking_definition->validate
 
-Validate L<STIX::Common::MarkingDefinition> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str Int);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -84,15 +85,19 @@ The value of this property MUST be C<autonomous-system>.
 
 =item $autonomous_system->TO_JSON
 
-Convert L<STIX::Observable::AutonomousSystem> object in JSON.
+Encode the object in JSON.
+
+=item $autonomous_system->to_hash
+
+Return the object HASH.
 
 =item $autonomous_system->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $autonomous_system->validate
 
-Validate L<STIX::Observable::AutonomousSystem> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

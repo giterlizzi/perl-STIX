@@ -5,8 +5,10 @@ use strict;
 use warnings;
 use utf8;
 
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -47,8 +49,8 @@ has atime => (
 
 has contains_refs => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable::Directory', 'STIX::Observable::File']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::Directory', 'STIX::Observable::File']],
+    default => sub { STIX::Common::List->new }
 );
 
 1;
@@ -124,15 +126,19 @@ The value of this property MUST be C<directory>.
 
 =item $directory->TO_JSON
 
-Convert L<STIX::Observable::Directory> object in JSON.
+Encode the object in JSON.
+
+=item $directory->to_hash
+
+Return the object HASH.
 
 =item $directory->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $directory->validate
 
-Validate L<STIX::Observable::Directory> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

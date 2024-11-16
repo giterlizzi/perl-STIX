@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Enum InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str Enum ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -30,12 +32,13 @@ has description => (is => 'rw', isa => Str);
 
 has infrastructure_types => (
     is      => 'rw',
-    isa     => ArrayRef [Enum [STIX::Common::OpenVocabulary->INFRASTRUCTURE_TYPE()]],
-    default => sub { [] }
+    isa     => ArrayLike [Enum [STIX::Common::OpenVocabulary->INFRASTRUCTURE_TYPE()]],
+    default => sub { STIX::Common::List->new }
 );
 
-has aliases => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
-has kill_chain_phases => (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::KillChainPhase']], default => sub { [] });
+has aliases => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
+has kill_chain_phases =>
+    (is => 'rw', isa => ArrayLike [InstanceOf ['STIX::KillChainPhase']], default => sub { STIX::Common::List->new });
 
 has first_seen => (
     is     => 'rw',
@@ -129,15 +132,19 @@ The type of this object, which MUST be the literal C<infrastructure>.
 
 =item $infrastructure->TO_JSON
 
-Convert L<STIX::Infrastructure> object in JSON.
+Encode the object in JSON.
+
+=item $infrastructure->to_hash
+
+Return the object HASH.
 
 =item $infrastructure->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $infrastructure->validate
 
-Validate L<STIX::Infrastructure> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

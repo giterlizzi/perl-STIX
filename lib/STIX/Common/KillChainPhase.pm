@@ -5,11 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/common/kill-chain-phase.json';
@@ -41,7 +42,7 @@ The C<kill-chain-phase> represents a phase in a kill chain.
 
 =head2 METHODS
 
-L<STIX::Common::KillChainPhase> inherits all methods from L<STIX::Base>
+L<STIX::Common::KillChainPhase> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -67,15 +68,19 @@ The name of the phase in the kill chain.
 
 =item $kill_chain_phase->TO_JSON
 
-Convert L<STIX::Common::KillChainPhase> in JSON.
+Helper for JSON encoders.
+
+=item $kill_chain_phase->to_hash
+
+Return the object HASH.
 
 =item $kill_chain_phase->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $kill_chain_phase->validate
 
-Validate L<STIX::Common::KillChainPhase> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

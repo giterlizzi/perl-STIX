@@ -11,9 +11,9 @@ use STIX::Indicator;
 use STIX::Common::Timestamp;
 use STIX::Common::Bundle;
 
-my @indicators = ();
+my $bundle = STIX::Common::Bundle->new;
 
-my $indicator = STIX::Indicator->new(
+push @{ $bundle->objects }, STIX::Indicator->new(
     pattern_type    => 'stix',
     created         => STIX::Common::Timestamp->new('2014-05-08T09:00:00'),
     name            => 'IP Address for known C2 channel',
@@ -22,10 +22,6 @@ my $indicator = STIX::Indicator->new(
     pattern         => "[ipv4-addr:value = '10.0.0.0']",
     valid_from      => STIX::Common::Timestamp->new('2014-05-08T09:00:00'),
 );
-
-push @indicators, $indicator;
-
-my $bundle = STIX::Common::Bundle->new(objects => \@indicators);
 
 # Functional interface
 

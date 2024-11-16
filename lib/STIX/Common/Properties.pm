@@ -5,26 +5,33 @@ use strict;
 use warnings;
 use utf8;
 
+use Carp;
+use STIX::Common::List;
+use STIX::Common::Timestamp;
+use Types::Standard qw(Str StrMatch Num ArrayRef HashRef Bool InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use STIX::Common::Timestamp;
-use Types::Standard qw(Str Num ArrayRef HashRef Bool InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/common/core.json';
-
-use Carp;
 
 has type => (is => 'rw', default => sub { shift->STIX_OBJECT_TYPE }, required => 1);
 
 has spec_version => (is => 'rw', default => '2.1');
 
-has id => (is => 'rw', isa => Str, default => sub { $_[0]->generate_id });
+has id => (
+    is  => 'rw',
+    isa => StrMatch [
+        qr{^[a-z][a-z0-9-]+[a-z0-9]--[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$}
+    ],
+    default => sub { shift->generate_id }
+);
 
-has created_by_ref => (is => 'rw', isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Base']);
+has created_by_ref => (is => 'rw', isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Object']);
 
 has created => (
     is      => 'rw',
@@ -42,20 +49,29 @@ has modified => (
 
 has revoked => (is => 'rw', isa => Bool);
 
-has labels => (is => 'rw', isa => ArrayRef [Str], coerce => 1, default => sub { [] });
+has labels => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 
 has confidence => (is => 'rw', isa => Num);
 
 has lang => (is => 'rw', isa => Str);
 
-has external_references =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Common::ExternalReference']], default => sub { [] });
+has external_references => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Common::ExternalReference']],
+    default => sub { STIX::Common::List->new }
+);
 
-has object_marking_refs =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Common::Identifier', 'STIX::Base']], default => sub { [] });
+has object_marking_refs => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Common::Identifier', 'STIX::Object']],
+    default => sub { STIX::Common::List->new }
+);
 
-has granular_markings =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Common::GranularMarking']], default => sub { [] });
+has granular_markings => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Common::GranularMarking']],
+    default => sub { STIX::Common::List->new }
+);
 
 has defanged => (is => 'rw', isa => Bool, trigger => 1);
 
@@ -92,7 +108,7 @@ Relationship Objects.
 
 =head2 METHODS
 
-L<STIX::Common::Properties> inherits all methods from L<STIX::Base>
+L<STIX::Common::Properties> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -183,15 +199,19 @@ by a STIX Object (e.g., indicator).
 
 =item $object->TO_JSON
 
-Convert L<STIX::Common::Properties> in JSON.
+Helper for JSON encoders.
+
+=item $object->to_hash
+
+Return the object HASH.
 
 =item $object->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $object->validate
 
-Validate L<STIX::Common::Properties> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

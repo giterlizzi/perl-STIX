@@ -5,9 +5,10 @@ use strict;
 use warnings;
 use utf8;
 
+use Exporter qw(import);
+
 use Carp;
 use UUID::Tiny qw(:std);
-use Exporter   qw(import);
 
 our @EXPORT = (qw[generate_uuid get_type_from_id is_sco is_sdo is_sro is_marking file_read file_write]);
 
@@ -31,8 +32,8 @@ sub is_sdo {
 
     my $object = shift;
 
-    return unless $object->can('STIX_OBJECT_TYPE');
-    return $object->STIX_OBJECT_TYPE eq 'SDO';
+    return unless $object->can('STIX_OBJECT');
+    return $object->STIX_OBJECT eq 'SDO';
 
 }
 
@@ -40,8 +41,8 @@ sub is_sco {
 
     my $object = shift;
 
-    return unless $object->can('STIX_OBJECT_TYPE');
-    return $object->STIX_OBJECT_TYPE eq 'SCO';
+    return unless $object->can('STIX_OBJECT');
+    return $object->STIX_OBJECT eq 'SCO';
 
 }
 
@@ -49,8 +50,8 @@ sub is_sro {
 
     my $object = shift;
 
-    return unless $object->can('STIX_OBJECT_TYPE');
-    return $object->STIX_OBJECT_TYPE eq 'SRO';
+    return unless $object->can('STIX_OBJECT');
+    return $object->STIX_OBJECT eq 'SRO';
 
 }
 

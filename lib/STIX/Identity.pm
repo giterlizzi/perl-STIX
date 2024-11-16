@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Enum);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str Enum ArrayRef);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -27,11 +29,14 @@ use constant STIX_OBJECT_TYPE => 'identity';
 
 has name           => (is => 'rw', isa => Str, required => 1);
 has description    => (is => 'rw', isa => Str);
-has roles          => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has roles          => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 has identity_class => (is => 'rw', isa => Enum [STIX::Common::OpenVocabulary->IDENTITY_CLASS()]);
 
-has sectors =>
-    (is => 'rw', isa => ArrayRef [Enum [STIX::Common::OpenVocabulary->INDUSTRY_SECTOR()]], default => sub { [] });
+has sectors => (
+    is      => 'rw',
+    isa     => ArrayLike [Enum [STIX::Common::OpenVocabulary->INDUSTRY_SECTOR()]],
+    default => sub { STIX::Common::List->new }
+);
 
 has contact_information => (is => 'rw', isa => Str);
 
@@ -111,15 +116,19 @@ The type of this object, which MUST be the literal C<identity>.
 
 =item $identity->TO_JSON
 
-Convert L<STIX::Identity> object in JSON.
+Encode the object in JSON.
+
+=item $identity->to_hash
+
+Return the object HASH.
 
 =item $identity->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $identity->validate
 
-Validate L<STIX::Identity> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

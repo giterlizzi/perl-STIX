@@ -5,9 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use STIX::Common::Timestamp;
 
+use Moo;
 extends 'STIX::Common::MarkingDefinition';
 
 use constant MARKING_TYPE => 'tlp';
@@ -44,7 +44,7 @@ White.
 
 =head2 METHODS
 
-L<STIX::Marking::TLP::White> inherits all methods from L<STIX::Base>
+L<STIX::Marking::TLP::White> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -72,15 +72,19 @@ Create a new instance of L<STIX::Marking::TLP::White>.
 
 =item $tlp->TO_JSON
 
-Convert L<STIX::Marking::TLP::White> in JSON.
+Helper for JSON encoders.
+
+=item $tlp->to_hash
+
+Return the object HASH.
 
 =item $tlp->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $tlp->validate
 
-Validate L<STIX::Marking::TLP::White> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

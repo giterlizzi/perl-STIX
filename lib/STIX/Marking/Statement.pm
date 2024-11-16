@@ -5,11 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str);
+
+use Moo;
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'https://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/common/marking-definition.json#/definitions/statement';
@@ -43,7 +44,7 @@ statement (e.g., copyright, terms of use, etc.) in a definition
 
 =head2 METHODS
 
-L<STIX::Marking::Statement> inherits all methods from L<STIX::Base>
+L<STIX::Marking::Statement> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -66,15 +67,19 @@ by this marking definition.
 
 =item $statement->TO_JSON
 
-Convert L<STIX::Marking::Statement> in JSON.
+Helper for JSON encoders.
+
+=item $statement->to_hash
+
+Return the object HASH.
 
 =item $statement->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $statement->validate
 
-Validate L<STIX::Marking::Statement> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

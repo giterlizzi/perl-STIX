@@ -9,7 +9,7 @@ use Moo;
 use Types::Standard qw(Str Int InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw(
     name hashes size
@@ -41,7 +41,7 @@ Specifies a list of NTFS alternate data streams that exist for the file.
 
 =head2 METHODS
 
-L<STIX::Observable::Type::AlternateDataStream> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Type::AlternateDataStream> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -71,15 +71,19 @@ Specifies the size of the alternate data stream, in bytes, as a non-negative int
 
 =item $alternate_data_stream_ext->TO_JSON
 
-Convert L<STIX::Observable::Type::AlternateDataStream> in JSON.
+Helper for JSON encoders.
+
+=item $alternate_data_stream_ext->to_hash
+
+Return the object HASH.
 
 =item $alternate_data_stream_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $alternate_data_stream_ext->validate
 
-Validate L<STIX::Observable::Type::AlternateDataStream> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

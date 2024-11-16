@@ -5,11 +5,14 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(InstanceOf Str);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(ArrayRef InstanceOf Str);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant SCHEMA =>
     'http://raw.githubusercontent.com/oasis-open/cti-stix2-json-schemas/stix2.1/schemas/common/granular-marking.json';
@@ -18,7 +21,7 @@ use constant PROPERTIES => qw(lang marking_ref selectors);
 
 has lang        => (is => 'rw', isa      => Str);
 has marking_ref => (is => 'rw', isa      => InstanceOf ['STIX::Common::MarkingDefinition']);
-has selectors   => (is => 'rw', required => 1, isa => ArrayRef [Str], default => sub { [] });
+has selectors   => (is => 'rw', required => 1, isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 
 1;
 
@@ -44,7 +47,7 @@ content identified by the list of selectors in the selectors property.
 
 =head2 METHODS
 
-L<STIX::Common::GranularMarking> inherits all methods from L<STIX::Base>
+L<STIX::Common::GranularMarking> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -76,15 +79,19 @@ this property appears.
 
 =item $granular_marking->TO_JSON
 
-Convert L<STIX::Common::GranularMarking> in JSON.
+Helper for JSON encoders.
+
+=item $granular_marking->to_hash
+
+Return the object HASH.
 
 =item $granular_marking->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $granular_marking->validate
 
-Validate L<STIX::Common::GranularMarking> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

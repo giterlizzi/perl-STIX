@@ -6,16 +6,14 @@ use warnings;
 use utf8;
 
 use Cpanel::JSON::XS;
-use Moo;
-
 use STIX::Common::Hashes;
 use STIX::Common::Identifier;
 use STIX::Util qw(file_read);
 use STIX;
 
+use Moo;
 
 use constant DEBUG => $ENV{STIX_DEBUG} || 0;
-
 
 my %OBJECTS_MAPPING = (
 

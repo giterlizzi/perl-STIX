@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Time::Piece;
 use Carp;
+use Time::Piece;
+
 use Moo;
 
 around BUILDARGS => sub {
@@ -86,13 +87,13 @@ The timestamp type defines how dates and times are represented in STIX.
 
 =over
 
-=item $object->TO_JSON
+=item $timestamp->TO_JSON
 
-Convert L<STIX::Common::Timestamp> object in JSON.
+Encode the object in JSON.
 
-=item $object->to_string
+=item $timestamp->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =back
 

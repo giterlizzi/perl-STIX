@@ -5,11 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(Str Num Bool HashRef);
+
+use Moo;
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     version
@@ -50,7 +51,7 @@ specific to PDF files.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::PDF> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::PDF> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -90,15 +91,19 @@ Specifies the second file identifier found for the PDF file.
 
 =item $pdf_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::PDF> in JSON.
+Helper for JSON encoders.
+
+=item $pdf_ext->to_hash
+
+Return the object HASH.
 
 =item $pdf_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $pdf_ext->validate
 
-Validate L<STIX::Observable::Extension::PDF> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

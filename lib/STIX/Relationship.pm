@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -37,8 +40,8 @@ around BUILDARGS => sub {
 
 has relationship_type => (is => 'rw', required => 1);
 has description       => (is => 'rw', isa      => Str);
-has source_ref        => (is => 'rw', required => 1, isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Base']);
-has target_ref        => (is => 'rw', required => 1, isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Base']);
+has source_ref        => (is => 'rw', required => 1, isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Object']);
+has target_ref        => (is => 'rw', required => 1, isa => InstanceOf ['STIX::Common::Identifier', 'STIX::Object']);
 
 has start_time => (
     is     => 'rw',
@@ -131,15 +134,19 @@ The type of this object, which MUST be the literal C<relationship>.
 
 =item $relationship->TO_JSON
 
-Convert L<STIX::Relationship> object in JSON.
+Encode the object in JSON.
+
+=item $relationship->to_hash
+
+Return the object HASH.
 
 =item $relationship->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $relationship->validate
 
-Validate L<STIX::Relationship> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

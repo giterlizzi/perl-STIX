@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -25,9 +28,13 @@ use constant STIX_OBJECT_TYPE => 'attack-pattern';
 
 has name        => (is => 'rw', isa => Str, required => 1);
 has description => (is => 'rw', isa => Str);
-has aliases     => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
-has kill_chain_phases =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Common::KillChainPhase']], default => sub { [] });
+has aliases     => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
+
+has kill_chain_phases => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Common::KillChainPhase']],
+    default => sub { STIX::Common::List->new }
+);
 
 1;
 
@@ -94,15 +101,19 @@ The type of this object, which MUST be the literal C<attack-pattern>.
 
 =item $attack_pattern->TO_JSON
 
-Convert L<STIX::AttackPattern> object in JSON.
+Encode the object in JSON.
+
+=item $attack_pattern->to_hash
+
+Return the object HASH.
 
 =item $attack_pattern->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $attack_pattern->validate
 
-Validate L<STIX::AttackPattern> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

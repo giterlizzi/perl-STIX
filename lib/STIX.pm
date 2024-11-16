@@ -168,7 +168,7 @@ my @COMMON = (qw[
     marking_definition
 ]);
 
-our $VERSION = '1.00_1';
+our $VERSION = '1.00_2';
 $VERSION =~ tr/_//d;    ## no critic
 
 our %EXPORT_TAGS = (
@@ -289,9 +289,9 @@ STIX - Structured Threat Information Expression (STIX)
     use STIX::Common::Timestamp;
     use STIX::Common::Bundle;
 
-    my @indicators = ();
+    my $bundle = STIX::Common::Bundle->new;
 
-    my $indicator = STIX::Indicator->new(
+    push @{ $bundle->objects }, STIX::Indicator->new(
         pattern_type    => 'stix',
         created         => STIX::Common::Timestamp->new('2014-05-08T09:00:00'),
         name            => 'IP Address for known C2 channel',
@@ -300,10 +300,6 @@ STIX - Structured Threat Information Expression (STIX)
         pattern         => "[ipv4-addr:value = '10.0.0.0']",
         valid_from      => STIX::Common::Timestamp->new('2014-05-08T09:00:00'),
     );
-
-    push @indicators, $indicator;
-
-    my $bundle = STIX::Common::Bundle->new(objects => \@indicators);
 
     # Functional interface
 

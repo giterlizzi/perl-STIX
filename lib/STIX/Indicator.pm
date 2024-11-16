@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Enum InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str Enum ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -28,8 +30,11 @@ use constant STIX_OBJECT_TYPE => 'indicator';
 has name => (is => 'rw', required => 1, isa => Str);
 has description => (is => 'rw', isa => Str);
 
-has indicator_types =>
-    (is => 'rw', isa => ArrayRef [Enum [STIX::Common::OpenVocabulary->INDICATOR_TYPE()]], default => sub { [] });
+has indicator_types => (
+    is      => 'rw',
+    isa     => ArrayLike [Enum [STIX::Common::OpenVocabulary->INDICATOR_TYPE()]],
+    default => sub { STIX::Common::List->new }
+);
 
 has pattern         => (is => 'rw', required => 1, isa => Str);
 has pattern_type    => (is => 'rw', required => 1, isa => Enum [STIX::Common::OpenVocabulary->PATTERN_TYPE()]);
@@ -43,8 +48,11 @@ has valid_from => (
 );
 
 has valid_until => (is => 'rw', isa => InstanceOf ['STIX::Common::Timestamp']);
-has kill_chain_phases =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Common::KillChainPhase']], default => sub { [] });
+has kill_chain_phases => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Common::KillChainPhase']],
+    default => sub { STIX::Common::List->new }
+);
 
 1;
 
@@ -135,15 +143,19 @@ intelligence.
 
 =item $indicator->TO_JSON
 
-Convert L<STIX::Indicator> object in JSON.
+Encode the object in JSON.
+
+=item $indicator->to_hash
+
+Return the object HASH.
 
 =item $indicator->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $indicator->validate
 
-Validate L<STIX::Indicator> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

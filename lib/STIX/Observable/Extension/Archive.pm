@@ -5,11 +5,14 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     contains_refs
@@ -21,8 +24,8 @@ use constant EXTENSION_TYPE => 'archive-ext';
 has contains_refs => (
     is       => 'rw',
     required => 1,
-    isa => ArrayRef [InstanceOf ['STIX::Observable::Directory', 'STIX::Observable::File', 'STIX::Common::Identifier']],
-    default => sub { [] }
+    isa => ArrayLike [InstanceOf ['STIX::Observable::Directory', 'STIX::Observable::File', 'STIX::Common::Identifier']],
+    default => sub { STIX::Common::List->new }
 );
 has comment => (is => 'rw', isa => Str);
 
@@ -48,7 +51,7 @@ specific to archive files.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::Archive> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::Archive> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -75,15 +78,19 @@ Specifies a comment included as part of the archive file.
 
 =item $archive_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::Archive> in JSON.
+Helper for JSON encoders.
+
+=item $archive_ext->to_hash
+
+Return the object HASH.
 
 =item $archive_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $archive_ext->validate
 
-Validate L<STIX::Observable::Extension::Archive> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

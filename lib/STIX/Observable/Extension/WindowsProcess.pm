@@ -6,12 +6,12 @@ use warnings;
 use utf8;
 
 use STIX::Common::Enum;
+use Types::Standard qw(Str Bool Enum HashRef);
 
 use Moo;
-use Types::Standard qw(Str Bool Enum HashRef);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     aslr_enabled
@@ -56,7 +56,7 @@ properties specific to Windows processes.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::WindowsProcess> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::WindowsProcess> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -103,15 +103,19 @@ Specifies the Windows integrity level, or trustworthiness, of the process
 
 =item $windows_process_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::WindowsProcess> in JSON.
+Helper for JSON encoders.
+
+=item $windows_process_ext->to_hash
+
+Return the object HASH.
 
 =item $windows_process_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $windows_process_ext->validate
 
-Validate L<STIX::Observable::Extension::WindowsProcess> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

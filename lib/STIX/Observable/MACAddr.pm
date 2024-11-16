@@ -5,8 +5,9 @@ use strict;
 use warnings;
 use utf8;
 
-use Moo;
 use Types::Standard qw(StrMatch);
+
+use Moo;
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -73,15 +74,19 @@ Specifies one or more mac addresses expressed using CIDR notation.
 
 =item $mac_addr->TO_JSON
 
-Convert L<STIX::Observable::MACAddr> object in JSON.
+Encode the object in JSON.
+
+=item $mac_addr->to_hash
+
+Return the object HASH.
 
 =item $mac_addr->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $mac_addr->validate
 
-Validate L<STIX::Observable::MACAddr> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

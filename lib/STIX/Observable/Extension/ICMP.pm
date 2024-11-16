@@ -6,12 +6,12 @@ use warnings;
 use utf8;
 
 use STIX::Common::Hex;
+use Types::Standard qw(Str InstanceOf);
 
 use Moo;
-use Types::Standard qw(Str InstanceOf);
 use namespace::autoclean;
 
-extends 'STIX::Base';
+extends 'STIX::Object';
 
 use constant PROPERTIES => (qw[
     icmp_type_hex
@@ -57,7 +57,7 @@ properties specific to ICMP.
 
 =head2 METHODS
 
-L<STIX::Observable::Extension::ICMP> inherits all methods from L<STIX::Base>
+L<STIX::Observable::Extension::ICMP> inherits all methods from L<STIX::Object>
 and implements the following new ones.
 
 =over
@@ -83,15 +83,19 @@ Specifies the ICMP code byte.
 
 =item $icmp_ext->TO_JSON
 
-Convert L<STIX::Observable::Extension::ICMP> in JSON.
+Helper for JSON encoders.
+
+=item $icmp_ext->to_hash
+
+Return the object HASH.
 
 =item $icmp_ext->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $icmp_ext->validate
 
-Validate L<STIX::Observable::Extension::ICMP> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

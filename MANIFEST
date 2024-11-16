@@ -1,8 +1,8 @@
 Changes
+cpanfile
 INSTALL.md
 lib/STIX.pm
 lib/STIX/AttackPattern.pm
-lib/STIX/Base.pm
 lib/STIX/cache/08af770727363739b2f559b8f03c149e
 lib/STIX/cache/0a210f4d6cc8232eb5ce2faea7131a95
 lib/STIX/cache/0d85632d52bd9b42d57506f9719b750e
@@ -76,6 +76,7 @@ lib/STIX/Common/Hashes.pm
 lib/STIX/Common/Hex.pm
 lib/STIX/Common/Identifier.pm
 lib/STIX/Common/KillChainPhase.pm
+lib/STIX/Common/List.pm
 lib/STIX/Common/MarkingDefinition.pm
 lib/STIX/Common/OpenVocabulary.pm
 lib/STIX/Common/Properties.pm
@@ -96,6 +97,7 @@ lib/STIX/Marking/TLP/Green.pm
 lib/STIX/Marking/TLP/Red.pm
 lib/STIX/Marking/TLP/White.pm
 lib/STIX/Note.pm
+lib/STIX/Object.pm
 lib/STIX/Observable.pm
 lib/STIX/Observable/Artifact.pm
 lib/STIX/Observable/AutonomousSystem.pm
@@ -151,6 +153,8 @@ README.md
 t/00-load.t
 t/20-parser.t
 t/21-parser.t
+t/30-list.t
+t/40-util.t
 t/50-observables-ipv4-addr-1.t
 t/50-observables-ipv4-addr-2.t
 t/50-observables-ipv6-addr-1.t

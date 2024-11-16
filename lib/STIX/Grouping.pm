@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Enum InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str Enum InstanceOf ArrayRef);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -31,7 +33,7 @@ has context     => (is => 'rw', required => 1, isa => Enum [STIX::Common::OpenVo
 has object_refs => (
     is       => 'rw',
     required => 1,
-    isa      => ArrayRef [InstanceOf ['STIX::Base', 'STIX::Common::Identifier']],
+    isa      => ArrayLike [InstanceOf ['STIX::Object', 'STIX::Common::Identifier']],
     default  => sub { [] }
 );
 
@@ -101,15 +103,19 @@ The type of this object, which MUST be the literal C<grouping>.
 
 =item $grouping->TO_JSON
 
-Convert L<STIX::Grouping> object in JSON.
+Encode the object in JSON.
+
+=item $grouping->to_hash
+
+Return the object HASH.
 
 =item $grouping->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $grouping->validate
 
-Validate L<STIX::Grouping> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

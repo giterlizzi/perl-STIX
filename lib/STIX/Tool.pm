@@ -5,10 +5,12 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
 use STIX::Common::OpenVocabulary;
+use Types::Standard qw(Str Enum InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
 
 use Moo;
-use Types::Standard qw(Str Enum InstanceOf ArrayRef);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -28,12 +30,18 @@ use constant STIX_OBJECT_TYPE => 'tool';
 has name => (is => 'rw', isa => Str, required => 1);
 has description => (is => 'rw', isa => Str);
 
-has tool_types =>
-    (is => 'rw', isa => ArrayRef [Enum [STIX::Common::OpenVocabulary->TOOL_TYPE()]], default => sub { [] });
+has tool_types => (
+    is      => 'rw',
+    isa     => ArrayLike [Enum [STIX::Common::OpenVocabulary->TOOL_TYPE()]],
+    default => sub { STIX::Common::List->new }
+);
 
-has aliases => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
-has kill_chain_phases =>
-    (is => 'rw', isa => ArrayRef [InstanceOf ['STIX::Common::KillChainPhase']], default => sub { [] });
+has aliases => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
+has kill_chain_phases => (
+    is      => 'rw',
+    isa     => ArrayLike [InstanceOf ['STIX::Common::KillChainPhase']],
+    default => sub { STIX::Common::List->new }
+);
 has tool_version => (is => 'rw', isa => Str);
 
 1;
@@ -108,15 +116,19 @@ The type of this object, which MUST be the literal C<tool>.
 
 =item $tool->TO_JSON
 
-Convert L<STIX::Tool> object in JSON.
+Encode the object in JSON.
+
+=item $tool->to_hash
+
+Return the object HASH.
 
 =item $tool->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $tool->validate
 
-Validate L<STIX::Tool> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 

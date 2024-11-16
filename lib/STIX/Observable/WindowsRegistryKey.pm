@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str Int InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef Int InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Observable';
@@ -27,8 +30,8 @@ has key => (is => 'rw', isa => Str);
 
 has values => (
     is      => 'rw',
-    isa     => ArrayRef [InstanceOf ['STIX::Observable::Type::WindowsRegistryValue']],
-    default => sub { [] }
+    isa     => ArrayLike [InstanceOf ['STIX::Observable::Type::WindowsRegistryValue']],
+    default => sub { STIX::Common::List->new }
 );
 
 has modified_time => (
@@ -108,15 +111,19 @@ Specifies the values found under the registry key.
 
 =item $windows_registry_key->TO_JSON
 
-Convert L<STIX::Observable::WindowsRegistryKey> object in JSON.
+Encode the object in JSON.
+
+=item $windows_registry_key->to_hash
+
+Return the object HASH.
 
 =item $windows_registry_key->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $windows_registry_key->validate
 
-Validate L<STIX::Observable::WindowsRegistryKey> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

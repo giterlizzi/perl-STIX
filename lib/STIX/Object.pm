@@ -1,4 +1,4 @@
-package STIX::Base;
+package STIX::Object;
 
 use 5.010001;
 use strict;
@@ -7,14 +7,14 @@ use utf8;
 
 use overload '""' => \&to_string, fallback => 1;
 
-use Moo;
-use Types::Standard qw(Str);
-use namespace::autoclean;
-
 use Carp;
 use Cpanel::JSON::XS;
 use STIX::Schema;
-use UUID::Tiny qw(:std);
+use Types::Standard qw(Str);
+use UUID::Tiny      qw(:std);
+
+use Moo;
+use namespace::autoclean;
 
 use constant PROPERTIES => qw();
 
@@ -30,6 +30,14 @@ sub generate_id {
 
     Carp::carp 'Unknown object type' unless $type;
 
+    return $self->generate_id_for_type($type, $ns, $name);
+
+}
+
+sub generate_id_for_type {
+
+    my ($self, $type, $ns, $name) = @_;
+    my $uuid_version = ($ns || $name) ? UUID_V5 : UUID_V4;
     return sprintf('%s--%s', $type, create_uuid_as_string($uuid_version, $ns, $name));
 
 }
@@ -44,6 +52,15 @@ sub to_string {
         ->stringify_infnan->escape_slash(0)->allow_dupkeys->pretty;
 
     return $json->encode($self->TO_JSON);
+
+}
+
+sub to_hash {
+
+    my $self = shift;
+
+    my $json = $self->to_string;
+    return Cpanel::JSON::XS->new->decode($json);
 
 }
 
@@ -79,7 +96,7 @@ sub TO_JSON {
 
                 $json->{extensions} = {};
 
-                if (ref $value eq 'ARRAY') {
+                if (ref $value eq 'ARRAY' || ref($value) eq 'STIX::Common::List') {
 
                     foreach my $extension (@{$value}) {
                         if (ref $extension && $extension->EXTENSION_TYPE()) {
@@ -94,7 +111,7 @@ sub TO_JSON {
                 }
 
             }
-            elsif (ref($value) eq 'ARRAY') {
+            elsif (ref($value) eq 'ARRAY' || ref($value) eq 'STIX::Common::List') {
 
                 if (@{$value}) {
 
@@ -131,15 +148,13 @@ sub TO_JSON {
 
 }
 
-sub Time::Piece::TO_JSON { shift->datetime . '.000Z' }
-
 1;
 
 =encoding utf-8
 
 =head1 NAME
 
-STIX::Base - Base class for STIX Objects
+STIX::Object - Base class for STIX Objects
 
 =head2 HELPERS
 
@@ -157,15 +172,19 @@ Generate STIX Identifier
 
 =item $object->TO_JSON
 
-Convert L<STIX::Observable> object in JSON.
+Encode the object in JSON.
+
+=item $object->to_hash
+
+Return the object HASH.
 
 =item $object->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $object->validate
 
-Validate L<STIX::Observable> object using JSON Schema
+Validate the object using JSON Schema
 (see L<STIX::Schema>).
 
 =back

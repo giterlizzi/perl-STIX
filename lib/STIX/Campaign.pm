@@ -5,8 +5,11 @@ use strict;
 use warnings;
 use utf8;
 
+use STIX::Common::List;
+use Types::Standard qw(Str InstanceOf);
+use Types::TypeTiny qw(ArrayLike);
+
 use Moo;
-use Types::Standard qw(Str ArrayRef InstanceOf);
 use namespace::autoclean;
 
 extends 'STIX::Common::Properties';
@@ -25,7 +28,7 @@ use constant STIX_OBJECT_TYPE => 'campaign';
 
 has name        => (is => 'rw', isa => Str, required => 1);
 has description => (is => 'rw', isa => Str);
-has aliases     => (is => 'rw', isa => ArrayRef [Str], default => sub { [] });
+has aliases     => (is => 'rw', isa => ArrayLike [Str], default => sub { STIX::Common::List->new });
 
 has first_seen => (
     is     => 'rw',
@@ -116,15 +119,19 @@ The type of this object, which MUST be the literal C<campaign>.
 
 =item $campaign->TO_JSON
 
-Convert L<STIX::Campaign> object in JSON.
+Encode the object in JSON.
+
+=item $campaign->to_hash
+
+Return the object HASH.
 
 =item $campaign->to_string
 
-Alias of L<TO_JSON>.
+Encode the object in JSON.
 
 =item $campaign->validate
 
-Validate L<STIX::Campaign> object using JSON Schema (see L<STIX::Schema>).
+Validate the object using JSON Schema (see L<STIX::Schema>).
 
 =back
 
