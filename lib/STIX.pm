@@ -335,10 +335,6 @@ Import all STIX objects
 
 Import all common objects
 
-=item :objects
-
-Import all STIX objects
-
 =item :sco
 
 Import all STIX Cyber-observable Objects
