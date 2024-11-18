@@ -165,7 +165,7 @@ my @COMMON = (qw[
     marking_definition
 ]);
 
-our $VERSION = '1.00_2';
+our $VERSION = '1.00';
 $VERSION =~ tr/_//d;    ## no critic
 
 our %EXPORT_TAGS = (
