@@ -6,7 +6,7 @@ use v5.10;
 
 use Test::More;
 
-use STIX qw(:obsevables);
+use STIX qw(:sco);
 
 
 my $object = process(

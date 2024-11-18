@@ -6,7 +6,7 @@ use v5.10;
 
 use Test::More;
 
-use STIX qw(:obsevables bundle);
+use STIX qw(:sco bundle);
 
 
 my $domain_name     = domain_name(value => 'example.com');

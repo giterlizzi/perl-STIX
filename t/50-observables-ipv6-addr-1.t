@@ -6,7 +6,7 @@ use v5.10;
 
 use Test::More;
 
-use STIX ':obsevables';
+use STIX ':sco';
 use Time::Piece;
 
 

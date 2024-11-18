@@ -6,7 +6,7 @@ use v5.10;
 
 use Test::More;
 
-use STIX qw(:obsevables bundle);
+use STIX qw(:sco bundle);
 
 
 my $ipv4_1 = ipv4_addr(value => '203.0.113.1');

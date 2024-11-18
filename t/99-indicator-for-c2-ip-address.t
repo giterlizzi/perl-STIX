@@ -6,14 +6,13 @@ use v5.10;
 
 use Test::More;
 
-use STIX ':objects';
+use STIX::Common::Bundle;
 use STIX::Common::Timestamp;
 use STIX::Indicator;
 
-
 # https://github.com/oasis-open/cti-stix2-json-schemas/blob/master/examples/indicator-for-c2-ip-address.json
 
-my @indicators = ();
+my $bundle = STIX::Common::Bundle->new;
 
 my $indicator = STIX::Indicator->new(
     pattern_type    => 'stix',
@@ -25,9 +24,7 @@ my $indicator = STIX::Indicator->new(
     valid_from      => STIX::Common::Timestamp->new('2014-05-08T09:00:00'),
 );
 
-push @indicators, $indicator;
-
-my $bundle = bundle(objects => \@indicators);
+$bundle->objects->push($indicator);
 
 my $json   = $bundle->to_string;
 my @errors = $bundle->validate;
